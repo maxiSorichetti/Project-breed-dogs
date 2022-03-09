@@ -1,0 +1,20 @@
+.ContainerLanding {
+  color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.5em;
+  /* text-align: center; */
+  background-image: url(../dog-4415649_1920.jpg);
+  background-size: 100% 100%;
+  height: 100vh;
+  width: 100vw;
+}
+.ButtonHome {
+  /* font-size: 1.5em; */
+  font-size: 1em;
+  background-color: aquamarine;
+  height: 2em;
+  width: 8em;
+  border-radius:8px
+}

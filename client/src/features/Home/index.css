@@ -1,0 +1,27 @@
+.ContainerHome {
+  display: flex;
+  flex-direction: column;
+  color: black;
+  margin: 0;
+}
+
+.Nav {
+  background-color: green;
+  margin: 0;
+  height: 15vh;
+}
+
+.Filters {
+  background-color: yellow;
+  height: 7vh;
+}
+
+.Cards {
+  background-color: red;
+  height: 70vh;
+}
+
+.Paginate {
+  background-color: blue;
+  height: 8vh;
+}
