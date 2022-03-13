@@ -1,6 +1,17 @@
 import './index.css';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getDogs, getAllDogs } from '../../redux/actions';
+import { Link } from 'react-router-dom';
+import { Card } from '../../components/Card'
 
 const Home = () => {
+  const dispatch = useDispatch();
+  const allDogs = useSelector(state => state.dogs)
+
+  useEffect(() => {
+    dispatch(getAllDogs());
+  },[dispatch])
 
   return (
     <div className="ContainerHome">
@@ -13,6 +24,15 @@ const Home = () => {
       </div>
       <div className="Cards">
         <h2>Espacio para las cards</h2>
+        {
+          allDogs?.map((dog, i) => {
+            return (
+              // <Link key={i} to={`/details/${dog.name}`}>
+                <Card key={i} name={dog.name} image={dog.image} temperament={dog.temperament} weight={dog.weight} />
+              // </Link>
+                )
+          })
+        }
       </div>
       <div className="Paginate">
         Paginado

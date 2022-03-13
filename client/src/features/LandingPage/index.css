@@ -12,6 +12,7 @@
 }
 .ButtonHome {
   /* font-size: 1.5em; */
+  margin: 30px;
   font-size: 1em;
   background-color: aquamarine;
   height: 2em;
