@@ -31,7 +31,7 @@
   border-radius: 4px;
   margin-bottom: 16px;
   border: 1px solid #1f53c5;
-  font-size: 18px;
+  font-size: 14px;
   color: black;
 }
 
@@ -49,6 +49,16 @@
   border: none;
   color: white;
   background-color: #1f53c5;
+  padding:12px;
+  margin: 16px 0;
+  font-size: 16px;
+}
+
+.disabled-button-submit {
+  width: 100%;
+  border: none;
+  color: white;
+  background-color: grey;
   padding:12px;
   margin: 16px 0;
   font-size: 16px;

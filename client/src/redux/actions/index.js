@@ -1,13 +1,24 @@
-import { GET_DOGS, POST_DOG, GET_DETAIL_DOG } from '../constants';
+import { GET_DOGS, POST_DOG, GET_DETAIL_DOG, GET_FILTER_DOG, GET_TEMPERAMENTS } from '../constants';
 import axios from 'axios';
+
+//API
+//const getApiInfo_Axios =  () => {
+// return axios.get("https://api.thedogapi.com/v1/breeds?api_key=" + API_KEY)
+  // .then((result) => {
+    // const apiInfo =  result.data.map((el) => {
+      // return {
 
   export function getAllDogs(){
     return async function(dispatch) {
-      let res = await axios.get('http://localhost:3001/dogs');
-      return dispatch({
-        type: GET_DOGS,
-        payload: res.data
-      })
+      try{
+        let res = await axios.get('http://localhost:3001/dogs');
+        return dispatch({
+          type: GET_DOGS,
+          payload: res.data
+        })
+      }catch(err) {
+        console.log('err', err)
+      }
     }
   }
   
@@ -44,10 +55,43 @@ import axios from 'axios';
           type:GET_DETAIL_DOG,
           payload: data
         })
+      // .catch(err => console.log('err', err))
       })
     }
   }
 
+  export function getTemperaments(){
+    return function(dispatch){
+      return fetch('http://localhost:3001/temperament')
+      .then(response => response.json())
+      .then(data => {
+        console.log('data temperaments', data)
+        dispatch({
+          type:GET_TEMPERAMENTS,
+          payload: data
+        })
+      // .catch(err => console.log('err', err))
+      })
+    }
+  }
+
+  export function getFilterDog(value){
+    return {
+      type: GET_FILTER_DOG,
+      payload: value
+    }
+  }
+
+  export function postDogs(newDog){
+    console.log('newDog', newDog)
+    return async function(dispatch){
+      const {data} = await axios.post('http://localhost:3001/dogs/create', newDog)
+      console.log('data reducer', data)
+      return dispatch({
+        type: POST_DOG,
+      })
+    } 
+  }
 // export function postDogs(){
 //   return {
 //     type: POST_DOG,
