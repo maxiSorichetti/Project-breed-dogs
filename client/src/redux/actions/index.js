@@ -1,4 +1,4 @@
-import { GET_DOGS, POST_DOG, GET_DETAIL_DOG, GET_FILTER_DOG, GET_TEMPERAMENTS } from '../constants';
+import { GET_DOGS, POST_DOG, GET_DETAIL_DOG, GET_FILTER_DOG, GET_TEMPERAMENTS, GET_FILTER_TEMPERAMENT, ORDER_DOGS, PAGINATE_DOGS } from '../constants';
 import axios from 'axios';
 
 //API
@@ -12,6 +12,7 @@ import axios from 'axios';
     return async function(dispatch) {
       try{
         let res = await axios.get('http://localhost:3001/dogs');
+        console.log('res.data getallDogs', res.data)
         return dispatch({
           type: GET_DOGS,
           payload: res.data
@@ -33,18 +34,6 @@ import axios from 'axios';
     } 
   }
 
-  // export function getDetailDog(idRaza){
-  //   return async function(dispatch){
-  //     return fetch(`http://localhost:3001/dogs/${idRaza}`)
-  //     .then(response => {
-  //       console.log('response', response)
-  //       dispatch({
-  //         type: GET_DETAIL_DOG,
-  //         payload: response.json()
-  //       })
-  //     })
-  //   }
-  // }
   export function getDetailDog(idRaza){
     return function(dispatch){
       return fetch(`http://localhost:3001/dogs/${idRaza}`)
@@ -65,13 +54,20 @@ import axios from 'axios';
       return fetch('http://localhost:3001/temperament')
       .then(response => response.json())
       .then(data => {
-        console.log('data temperaments', data)
+        console.log('data temperaments action', data)
         dispatch({
           type:GET_TEMPERAMENTS,
           payload: data
         })
       // .catch(err => console.log('err', err))
       })
+    }
+  }
+  
+  export function getFilterTemperament(value){
+    return {
+      type: GET_FILTER_TEMPERAMENT,
+      payload: value
     }
   }
 
@@ -92,12 +88,22 @@ import axios from 'axios';
       })
     } 
   }
-// export function postDogs(){
-//   return {
-//     type: POST_DOG,
-//     payload: asyn
-//   }
-// } 
+
+  export function orderDogsAction(value){
+    console.log('value order action', value)
+    return {
+      type: ORDER_DOGS,
+      payload: value
+    }
+  }
+
+  export function PaginateAction(value){
+    console.log('value paginate action', value)
+    return {
+      type: PAGINATE_DOGS,
+      payload: value
+    }
+  }
 
 // export function postRecipes(newRecipe){
 //   return async function(){

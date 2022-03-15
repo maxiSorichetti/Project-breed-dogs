@@ -13,7 +13,7 @@ const DetailDog = ({image, name, temperament, height, weight, life_span}) => {
   useEffect(() => {
     dispatch(getDetailDog(idRaza))
   },[]);
-
+  console.log('dataDog', dataDog)
   console.log('dataDog.createdInDb', dataDog.createdInDb)
   return (
     <div className="detail-container">
@@ -27,7 +27,8 @@ const DetailDog = ({image, name, temperament, height, weight, life_span}) => {
               <h2>Altura: {dataDog.createdInDb ? dataDog.height : dataDog.height.metric}</h2>
               <h2>Peso: {dataDog.createdInDb ? dataDog.weight : dataDog.weight.metric}</h2>
               <h2>Esperanza de vida: {dataDog.life_span}</h2>
-              <h2>Temperamento: {dataDog.createdInDb ? dataDog.temperaments.map((e, i) => i === (dataDog.temperaments.length - 1) ? `${e.name} ` : `${e.name}, `) : dataDog.temperament && dataDog.temperament.split(" ").map(t => t)}</h2>
+              {/* <h2>Temperamento: {dataDog.createdInDb ? dataDog.temperament.map((e, i) => i === (dataDog.temperament.length - 1) ? `${e.name} ` : `${e.name}, `) : dataDog.temperament && dataDog.temperament.split(" ").map(t => t)}</h2> */}
+              <h2>Temperamento: {dataDog.createdInDb ? dataDog.temperament.map((e, i) => i === (dataDog.temperament.length - 1) ? `${e} ` : `${e}, `) : dataDog.temperament && dataDog.temperament.split(" ").map((e) => `${e} `)}</h2>
             </div>
           </div>
         ) : "No se encontro la raza indicada"

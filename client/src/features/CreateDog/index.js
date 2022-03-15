@@ -7,7 +7,8 @@ import './index.css'
 
 const CreateDog = () => {
   const dispatch = useDispatch();
-  const allTemperaments = useSelector(state => state.temperaments);
+  const allTemperaments = useSelector(state => state.temperament);
+  console.log('allTemperaments create dog', allTemperaments)
   //ver si es temperament en la db
   const [error, setError] = useState("");
   const [input, setInput] = useState({

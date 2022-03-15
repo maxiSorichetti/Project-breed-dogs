@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const axios = require('axios');
 const { Dog, Temperament } = require('../db.js');
-const getAllData = require('./functions');
+const { getAllData } = require('./functions');
 
 //http://localhost:3001/dogs?name=golden
 router.get('/', async (req, res) => {
@@ -14,6 +14,7 @@ router.get('/', async (req, res) => {
     //si name no existe en la busqueda mostrar msj
     filterDogs ? res.status(200).json(filterDogs) : res.status(404).send(`No se encuentra la raza ${name}`)
   }else{
+    console.log('dogsApi', dogsApi)
       res.status(200).json(dogsApi);
     }
 });
@@ -21,20 +22,32 @@ router.get('/', async (req, res) => {
 //Obtener el detalle de una raza de perro en particular
 //Debe traer solo los datos pedidos en la ruta de detalle de raza de perro
 //Incluir los temperamentos asociados
-router.get('/:name', async function (req, res) {
-  const {name} = req.params  
+router.get('/:idRaza', async function (req, res) {
+  const {idRaza} = req.params  
+  console.log('idRaza', idRaza)
   try{ 
-    const dogsBreeds = await axios.get(`https://api.thedogapi.com/v1/breeds/search?q=${name}`)
+    const dogsBreeds = await axios.get(`https://api.thedogapi.com/v1/breeds`)
+    const findDog = dogsBreeds.data.find(e => e.name.toLowerCase() === idRaza.toLowerCase())
     const dogDb = await Dog.findOne({
       where: {
-        name: name,
+        name: idRaza,
       },
-      //ver si traigo temperamentos cuando
       include: Temperament,
-    }); 
-    if(dogDb || dogsBreeds.data){
-        const findBreeds = dogsBreeds.data.concat(dogDb);
-        res.status(200).json(findBreeds);
+    });
+
+    console.log('dogDb /raza', dogDb)
+    if(dogDb || findDog){
+      if(dogDb) {
+        const infoDbNormalize = {
+            ...dogDb.dataValues,
+            temperament: dogDb.temperaments.map(e => e.name)
+          }
+        console.log('inDbNormalize dogs', infoDbNormalize)
+        res.status(200).json(infoDbNormalize);
+      }else{
+        res.status(200).json(findDog);
+      }
+        // const findBreeds = dogsBreeds.data.concat(dogDb);
     }else{
       res.status(404).send("No existe esa raza");
     }
@@ -56,6 +69,7 @@ router.post('/create', async function (req, res) {
         weight,
         life_span,
         temperament,
+        image: 'https://cdn2.thedogapi.com/images/B1d5me547.jpg',
       });
       const temperamentDb = await Temperament.findAll({
         where: {

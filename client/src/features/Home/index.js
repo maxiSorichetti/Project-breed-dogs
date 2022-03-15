@@ -1,18 +1,24 @@
 import './index.css';
-import { useEffect } from 'react';
+import { useEffect} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getDogs, getAllDogs } from '../../redux/actions';
-import { Card } from '../../components/Card'
-import SearchBar from '../../components/SearchBar/index'
+import { getTemperaments, getAllDogs } from '../../redux/actions';
+import { Card } from '../../components/Card';
+import SearchBar from '../../components/SearchBar/index';
+import Temperament from '../../components/Temperament/index';
+import OrderDogs from '../../components/OrderDogs/index';
+import Paginate from '../../components/Paginate/index';
 
 const Home = () => {
   const dispatch = useDispatch();
-  const allDogs = useSelector(state => state.dogs)
+  const allDogs = useSelector(state => state.dogs);
+  const allTemperaments = useSelector(state => state.temperament);
 
   useEffect(() => {
     dispatch(getAllDogs());
+    dispatch(getTemperaments());
   },[dispatch])
 
+  console.log('allTemperaments', allTemperaments)
   return (
     <div className="ContainerHome">
       <div className="Nav">
@@ -20,10 +26,11 @@ const Home = () => {
       <SearchBar />
       </div>
       <div className="Filters">
-        <h2>filtros, Temperamento - raza (api o creado por nos) - asd o desc (por orden alfabetico o peso)</h2>
+        {/* <h2>filtros, Temperamento - raza (api o creado por nos) - asd o desc (por orden alfabetico o peso)</h2> */}
+        <Temperament />
+        <OrderDogs />
       </div>
       <div className="Cards">
-        <h2>Espacio para las cards</h2>
         {
           allDogs?.map((dog, i) => {
             return (
@@ -33,7 +40,7 @@ const Home = () => {
         }
       </div>
       <div className="Paginate">
-        Paginado
+        <Paginate />
       </div>
     </div>
   )
