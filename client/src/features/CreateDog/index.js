@@ -8,9 +8,7 @@ import './index.css'
 const CreateDog = () => {
   const dispatch = useDispatch();
   const allTemperaments = useSelector(state => state.temperament);
-  console.log('allTemperaments create dog', allTemperaments)
-  //ver si es temperament en la db
-  const [error, setError] = useState("");
+  const [error, setError] = useState({});
   const [input, setInput] = useState({
     name: "",
     heightMin: "",
@@ -33,6 +31,12 @@ const CreateDog = () => {
       errors.name = "Nombre es requerido";
     }else if (!/^[a-z A-Z]+$/.test(input.name)){
       errors.name = "Nombre permite solo letras Minusculas y/o Mayusculas"
+    }else if(!input.heightMin){
+      errors.height = "Altura mínima es requerida";
+    }else if(!input.heightMax){
+      errors.height = "Altura máxima es requerido";
+    }else if(input.heightMax < input.heightMin){
+      errors.height = "La altura mínimo debe ser menor a la máxima";
     }
     return errors
   }
@@ -59,22 +63,10 @@ const CreateDog = () => {
   
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(input.heightMax < input.heightMin){
-      return setError({
-        ...error,
-        height: "El peso mínimo debe ser menor al màximo"
-      })
-    } 
-    if(input.weightMax < input.weightMin){
-      return setError({
-        ...error,
-        weight: "La altura mínima debe ser menor a la màxima"
-      })
-    } 
     dispatch(postDogs({
       ...input,
-      height: `${input.heightMin} a ${input.heightMax}`,
-      weight: `${input.weightMin} a ${input.weightMax}`
+      height: `${input.heightMin} - ${input.heightMax}`,
+      weight: `${input.weightMin} - ${input.weightMax}`
     }));
     setInput({
       name: "",
@@ -88,6 +80,15 @@ const CreateDog = () => {
       temperament: [],
     })
     alert("Formulario enviado con èxito")
+  }
+
+  const handleDelete = (event) => {
+    event.preventDefault();
+    const tempFilter = input.temperament.filter(e => e !== event.target.value)
+    setInput({
+      ...input,
+      temperament: tempFilter
+    })
   }
 
   return (
@@ -110,7 +111,7 @@ const CreateDog = () => {
         </div>
         <div>
           <input
-            className="form-inputs" 
+            className="form-inputs-small" 
             type="text"
             value={input.heightMin}
             onChange={(e)=>handleInput(e)} 
@@ -118,7 +119,7 @@ const CreateDog = () => {
             placeholder="Altura Min (ejemplo: 20)"
           />
           <input
-            className="form-inputs" 
+            className="form-inputs-small" 
             type="text"
             value={input.heightMax}
             onChange={(e)=>handleInput(e)} 
@@ -129,20 +130,20 @@ const CreateDog = () => {
         </div>
         <div>
           <input
-            className="form-inputs" 
+            className="form-inputs-small" 
             type="text"
             value={input.weightMin}
             onChange={(e)=>handleInput(e)} 
             name="weightMin"
-            placeholder="Peso (ejemplo: 15 a 25)"
+            placeholder="Peso Min (ejemplo: 15)"
           />
           <input
-            className="form-inputs" 
+            className="form-inputs-small" 
             type="text"
             value={input.weightMax}
             onChange={(e)=>handleInput(e)} 
             name="weightMax"
-            placeholder="Peso (ejemplo: 15 a 25)"
+            placeholder="Peso Max (ejemplo: 25)"
             />
             {error.weight && (<p>{error.weight}</p>)}
         </div>
@@ -166,15 +167,19 @@ const CreateDog = () => {
         </div>
         <div>
           <ul>
-
           {
-            input.temperament?.map((e, i) => {
-              return <li key={i}>{e}</li>
+            input.temperament?.map((f,i) => {
+              return (
+                <div key={i} className="temperament-select">
+                  <p>{f}</p>
+                  <button className="button-delete" value={f} onClick={(e) => handleDelete(e)}>X</button>
+                </div>
+              )
             })
           }
           </ul>
         </div>
-        <input className={error.name ? "disabled-button-submit" : "form-button-submit"} onClick={(e) => handleSubmit(e)} type="submit" value="Enviar formulario" disabled={error.name || error.height || error.weight ? true : false} />
+        <input className={Object.keys(error).length ? "disabled-button-submit" : "form-button-submit"} onClick={(e) => handleSubmit(e)} type="submit" value="Enviar formulario" disabled={Object.keys(error).length ? true : false} />
       </form>
     </div>
   )

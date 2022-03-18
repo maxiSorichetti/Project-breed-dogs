@@ -22,6 +22,8 @@ server.use((req, res, next) => {
   next();
 });
 
+
+//aca le digo que cuando hago / ingrese a routes, esto lo hago para modularizar
 server.use('/', routes);
 
 // Error catching endware.

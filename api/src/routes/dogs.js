@@ -1,28 +1,34 @@
 const router = require('express').Router();
 const axios = require('axios');
+const { clearCookie } = require('express/lib/response');
 const { Dog, Temperament } = require('../db.js');
 const { getAllData } = require('./functions');
 
 //http://localhost:3001/dogs?name=golden
-router.get('/', async (req, res) => {
-  //Obtener un listado de las razas de perro que contengan la palabra ingresada como query parameter
+router.get('/', async (req, res, next) => {
   const {name} = req.query;
-  const dogsApi = await getAllData();
-
+  try{
+    const dogsApi = await getAllData();
+    const data = dogsApi.map(e => {
+    const weightNormalized = e.weight.metric ? e.weight.metric.split(' - ') : e.weight.split(' - ')
+    return {
+      ...e,
+      weight: weightNormalized[0] 
+    }
+  })
     if(name){
-    const filterDogs = await dogsApi.filter(el => el.name.toLowerCase().includes(name.toLowerCase()));
+    const filterDogs = dogsApi.filter(el => el.name.toLowerCase().includes(name.toLowerCase()));
     //si name no existe en la busqueda mostrar msj
     filterDogs ? res.status(200).json(filterDogs) : res.status(404).send(`No se encuentra la raza ${name}`)
   }else{
-    console.log('dogsApi', dogsApi)
-      res.status(200).json(dogsApi);
+    res.status(200).json(data);
     }
+  }catch(err) {
+    console.log('error', err);
+  }
 });
 
-//Obtener el detalle de una raza de perro en particular
-//Debe traer solo los datos pedidos en la ruta de detalle de raza de perro
-//Incluir los temperamentos asociados
-router.get('/:idRaza', async function (req, res) {
+router.get('/:idRaza', async function (req, res, next) {
   const {idRaza} = req.params  
   console.log('idRaza', idRaza)
   try{ 
@@ -35,19 +41,16 @@ router.get('/:idRaza', async function (req, res) {
       include: Temperament,
     });
 
-    console.log('dogDb /raza', dogDb)
     if(dogDb || findDog){
       if(dogDb) {
         const infoDbNormalize = {
             ...dogDb.dataValues,
             temperament: dogDb.temperaments.map(e => e.name)
           }
-        console.log('inDbNormalize dogs', infoDbNormalize)
         res.status(200).json(infoDbNormalize);
       }else{
         res.status(200).json(findDog);
       }
-        // const findBreeds = dogsBreeds.data.concat(dogDb);
     }else{
       res.status(404).send("No existe esa raza");
     }
@@ -56,10 +59,7 @@ router.get('/:idRaza', async function (req, res) {
   }
 });
 
-//Recibe los datos recolectados desde el formulario controlado de la ruta de creación de raza de perro por body
-//Crea una raza de perro en la base de datos
-
-router.post('/create', async function (req, res) {
+router.post('/create', async function (req, res, next) {
   const { name, height, weight, life_span, temperament } = req.body;
   try {
     if( name && height && weight && life_span && temperament ) {
@@ -76,7 +76,7 @@ router.post('/create', async function (req, res) {
           name: temperament,
         }
       });
-      console.log('temperamentDb', temperamentDb)
+      //hago la asociacion 
       return res.status(200).json(await dogCreate.addTemperament(temperamentDb))
     }
     return res.status(200).send("falta información para crear la raza de perro") 
@@ -84,5 +84,6 @@ router.post('/create', async function (req, res) {
     return res.status(404).send(err);
   }
 })
+
 
 module.exports = router;

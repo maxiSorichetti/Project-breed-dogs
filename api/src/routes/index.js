@@ -4,7 +4,6 @@ const { Router } = require('express');
 const dogs = require('./dogs');
 const temperament = require('./temperaments');
 
-
 const router = Router();
 
 // Configurar los routers

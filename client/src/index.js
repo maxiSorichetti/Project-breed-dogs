@@ -10,7 +10,7 @@ import { store } from './redux/store';
 
 // envolvemos nuestro componente principal React dentro de las etiquetas del Provider,
 // El componente Provider es donde "vive" el store.
-
+//BrowserRouter es el componente que usamos para crear nuestra rutas y hacer las redirecciones
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>

@@ -1,13 +1,16 @@
 .cardContainer {
-  background-color: #1f53c5;
-  width: 320px;
-  height: 350px;
-  border-radius: 12;
+  background-color: white;
+  width: 270px;
+  height: 280px;
+  border-radius: 12px;
   display: 'flex';
   flex-flow: 'column wrap';
-  border: 1px solid black; 
+  border: 1px solid #1f53c5; 
   /* ver este negro */
   border-radius: 12px;
+  margin: 0px 20px 10px;
+    box-shadow: 7px 13px 37px #000;
+
 }
 
 .picDog {
@@ -17,8 +20,8 @@
   justify-content: center;
   align-items: center;
   border-radius: 12px;
-  margin-top: 8px;
-  padding-top: 8px;
+  /* margin-top: 4px; */
+  /* padding-top: 8px; */
 }
 
 .imgContainer {
@@ -29,12 +32,12 @@
 
 .text-Card {
   box-shadow: none;
-  color: white;
-  font-size: 11px;
+  color: #1f53c5;
+  font-size: 9px;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding-left: 8px;
-  padding: 10px;
+  /* padding: 10px; */
 }
 

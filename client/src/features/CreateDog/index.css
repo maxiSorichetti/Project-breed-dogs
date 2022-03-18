@@ -1,6 +1,5 @@
 .Container-create {
   background-image: url('dog-3239718_1920.jpg');
-  /* background-image: url('beach-863139_1920.jpg'); */
   background-size: 100% 100%;
   height: 100vh;
   width: 100vw;
@@ -11,21 +10,29 @@
   background-color: white;
   padding: 30px;
   margin: auto;
-  margin-top: 5%;
   border-radius: 4px;
   color: black;
   box-shadow: 7px 13px 37px #000;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 
 .h2-form{
-  /* font-size: 22px; */
   margin-bottom: 20px;
   font-size: 20px;
-  /* line-height: 40px; */
 }
 
 .form-inputs {
   width: 90%;
+  background-color: white;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  border: 1px solid #1f53c5;
+  font-size: 14px;
+  color: black;
+}
+.form-inputs-small {
+  width: 43%;
   background-color: white;
   padding: 10px;
   border-radius: 4px;
@@ -75,3 +82,19 @@
   font-size: 16px;
 }
 
+.temperament-select {
+  color: grey;
+  display: flex;
+  align-items: center;
+  height: 20px;
+  margin: 5px;
+  }
+
+.button-delete {
+  background-color: #1f53c5;
+  color:white;  
+  border-radius: 20px 20px 20px 20px;
+  height: 24px;
+  width: 24px;
+  margin-left: 5px;
+}

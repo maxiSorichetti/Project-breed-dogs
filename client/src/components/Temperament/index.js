@@ -11,15 +11,13 @@ export default function Temperament(){
   },[dispatch])
 
   const handleTemperaments = (e) => {
-    console.log('e.target.value', e.target.value)
     e.preventDefault();
     dispatch(getFilterTemperament(e.target.value))
   }
 
-  console.log('allTemperaments', allTemperaments)
   return (
     <div>
-      <select onChange={(e)=>handleTemperaments(e)}>
+      <select className="home-select" onChange={(e)=>handleTemperaments(e)}>
         {
           allTemperaments?.map((el, i) => {
             return (
