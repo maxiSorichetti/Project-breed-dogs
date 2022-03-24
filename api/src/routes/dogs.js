@@ -62,7 +62,10 @@ router.get('/:idRaza', async function (req, res, next) {
 router.post('/create', async function (req, res, next) {
   const { name, height, weight, life_span, temperament } = req.body;
   try {
-    if( name && height && weight && life_span && temperament ) {
+    const dogDb = await Dog.findOne({
+      where: { name: name},
+    })
+    if( !dogDb || name && height && weight && life_span && temperament ) {
       const dogCreate = await Dog.create({
         name,
         height,

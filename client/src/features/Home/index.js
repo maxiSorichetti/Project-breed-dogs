@@ -65,6 +65,15 @@ const Home = () => {
       setOrderAscDesc(e.target.value)
   }
 
+  // useEffect(() => {
+  //   first
+  
+  //   return () => {
+  //     second
+  //   }
+  // }, [third])
+  
+
   const handleDbOrApi = (e) => {
       setDogDborApi(e.target.value)
   }
@@ -80,6 +89,16 @@ const Home = () => {
       filterDog.length ? dispatch(getFilterDog(filterDog)) : setMsj(true)
       setText("");
     }
+
+  const handlePaginate = (e) => {
+    e.preventDefault();
+    if(e.target.name === "atras"){
+      setCurrentPage(currentPage - 1)
+    }
+    if(e.target.name === "adelante"){
+      setCurrentPage(currentPage + 1)
+    }
+  }
 
   const refreshPage = () => {
     window.location.reload(false);
@@ -124,11 +143,13 @@ const Home = () => {
       {
         !filterDogState.length && 
           <div className="Paginate">
+            <button className="button-paginate" name="atras" onClick={(e)=>handlePaginate(e)}>Prev</button>
             {
               pageNumbers?.map(e => (
                 <button className="button-paginate" key={e} name={e} onClick={(e)=>handleInput(e)}>{e}</button>
                 ))
             }
+            <button className="button-paginate" name="adelante" onClick={(e)=>handlePaginate(e)}>Next</button>
           </div>
       }
     </div>
